@@ -27,18 +27,18 @@ class DashboardController extends AbstractDashboardController
 {
 
 	private QuestionRepository $questionRepository;
-	private ChartBuilderInterface  $chartBuilder;
 
-	public function __construct(QuestionRepository $questionRepository, ChartBuilderInterface  $chartBuilder)
+	public function __construct(QuestionRepository $questionRepository)
 	{
 		$this->questionRepository = $questionRepository;
-		$this->chartBuilder = $chartBuilder;
 	}
 
 	#[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: 'admin')]
-    public function index(): Response
+    public function index(ChartBuilderInterface  $chartBuilder = null): Response
     {
+		assert(null !== $chartBuilder);
+
 		$latestQuestions = $this->questionRepository->findLatest();
 		$topVoted = $this->questionRepository->findTopVoted();
 
@@ -46,7 +46,7 @@ class DashboardController extends AbstractDashboardController
 		[
 			'latestQuestions' => $latestQuestions,
 			'topVoted' => $topVoted,
-			'chart' => $this->createChart()
+			'chart' => $this->createChart($chartBuilder)
 		]);
         //return parent::index();
 
@@ -124,9 +124,9 @@ class DashboardController extends AbstractDashboardController
 			]);
 	}
 
-	private function createChart(): Chart
+	private function createChart(ChartBuilderInterface $chartBuilder): Chart
 	{
-		$chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+		$chart = $chartBuilder->createChart(Chart::TYPE_LINE);
 		$chart->setData([
 			'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 			'datasets' => [
