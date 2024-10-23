@@ -1,0 +1,11 @@
+:root
+{
+    --sidebar-bg: #374151;
+    --sidebar-menu-color: #f3f4f6;
+    --sidebar-logo-color: #f3f4f6;
+}
+
+.main-content
+{
+    margin-bottom: 100px;
+}
