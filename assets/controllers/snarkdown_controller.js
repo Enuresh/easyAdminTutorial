@@ -3,7 +3,7 @@ import snarkdown from 'snarkdown';
 
 const document = window.document;
 
-/* stimulusFetch: 'lazy*/
+/* stimulusFetch: 'lazy'*/
 export default class extends Controller
 {
     static targets = ['input'];
