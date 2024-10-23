@@ -48,13 +48,14 @@ class QuestionCrudController extends AbstractCrudController
 			->setHelp('Preview:');
 
 		yield VotesField::new('votes', 'Total Votes')
-			->setTextAlign('right');
+			->setTextAlign('right')
+			->setPermission('ROLE_SUPER_ADMIN');
 
 		yield AssociationField::new('askedBy')
 			->autocomplete()
-			->formatValue(static function($value, Question $question)
+			->formatValue(static function($value, ?Question $question)
 			{
-				if (!$user = $question->getAskedBy())
+				if (!$user = $question?->getAskedBy())
 				{
 					return null;
 				}
